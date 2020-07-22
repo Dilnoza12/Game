@@ -9,13 +9,18 @@ import kotlinx.android.synthetic.main.activity_main2.*
 import kotlin.random.Random
 
 class Main2Activity : AppCompatActivity() {
-
+    companion object{
+        var LEVEL_COUNT=10
+        var RIGHT_ANSWERS_COUNT="rightAnswersCount"
+    }
 
 
     var firstNumber: Int = 0
     var secondNumber: Int = 0
     var operator: String = ""
-
+    var rightAnswers=0
+    var wrongAnswers=0
+    var currentLevelCount=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +31,20 @@ class Main2Activity : AppCompatActivity() {
     fun variantClick(button: View) {
         val intent=Intent(this,GameOverActivity::class.java)
         if ((button as Button).text == getRightAnswer().toString()) {
-            intent.putExtra("result","Right")
+           rightAnswers++
         }
         else{
-            intent.putExtra("result","Wrong")
+           wrongAnswers++
         }
-
+        if(currentLevelCount== LEVEL_COUNT){
+            val intent=Intent(this,GameOverActivity::class.java)
+            intent.putExtra(RIGHT_ANSWERS_COUNT,rightAnswers)
+            startActivity(intent)
+            finish()
+        }
+        else{
+            playGame()
+        }
     }
 
 
